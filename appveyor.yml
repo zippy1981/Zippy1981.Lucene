@@ -25,7 +25,8 @@ build:
   include_nuget_references: true
   parallel: true
 after_test:
-- cmd: codecov -f "$root\coverage.opencover.xml" 
+- cmd: codecov -f "coverage.opencover.xml"
+- cmd: git status
 artifacts:
   - path: $(MSBUILD_LOG_FILE)
     name: MSBuild Binary Log
