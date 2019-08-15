@@ -18,12 +18,14 @@ nuget:
   project_feed: true
 before_build:
 - cmd: nuget restore -Verbosity %NUGET_VERBOSITY%
-- cmd: nuget install MSBuild.StructuredLogger -Version %MSBUILD_LOG_VERSION%  -SolutionDirectory . -Verbosity %NUGET_VERBOSITY%
+- cmd: choco install codecov
 build:
   publish_nuget: true
   publish_nuget_symbols: true
   include_nuget_references: true
   parallel: true
+after_test:
+- cmd: codecov -f "$root\coverage.opencover.xml" 
 artifacts:
   - path: $(MSBUILD_LOG_FILE)
     name: MSBuild Binary Log
