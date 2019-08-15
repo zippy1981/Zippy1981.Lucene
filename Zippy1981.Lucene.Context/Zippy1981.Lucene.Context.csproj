@@ -1,10 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <Authors>zippy1981</Authors>
     <TargetFramework>netstandard1.6</TargetFramework>
     <AssemblyVersion>0.1</AssemblyVersion>
     <FileVersion>0.1</FileVersion>
     <Version>0.1-pre</Version>
+    <Description>This assembly contains LuceneContext, a class that encapsulates several Lucene classes and makes it easy to use Lucene with dependency Injection</Description>
+    <License>MIT</License>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Lucene.Net" Version="4.8.0-beta00005" />
