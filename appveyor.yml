@@ -28,3 +28,13 @@ artifacts:
   - path: $(MSBUILD_LOG_FILE)
     name: MSBuild Binary Log
     type: file
+deploy:
+  - provider: NuGet
+    api_key:
+      secure: lJITXIl3n0A7VLVoNNI8kI0Ay/e5XliMI2CtZS8L6T6K50r0PZlRZ5IgSdKzWQ+c
+    skip_symbols: false
+    artifact: /.*\.nupkg/
+    on:
+      branch: [
+        master
+      ]
