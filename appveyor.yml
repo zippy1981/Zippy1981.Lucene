@@ -26,7 +26,7 @@ build:
   parallel: true
 after_test:
 - cmd: codecov -f "coverage.opencover.xml"
-- cmd: git status
+- cmd: git status --ignored
 artifacts:
   - path: $(MSBUILD_LOG_FILE)
     name: MSBuild Binary Log
