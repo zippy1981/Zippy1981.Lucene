@@ -24,6 +24,8 @@ build:
   publish_nuget_symbols: true
   include_nuget_references: true
   parallel: true
+test_script:
+  - cmd: dotnet test --no-build
 after_test:
 - cmd: codecov -f "coverage.opencover.xml"
 - cmd: git status --ignored
