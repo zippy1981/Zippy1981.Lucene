@@ -1,5 +1,9 @@
 version: 0.1.{build}
 image: Visual Studio 2017
+environment:
+  MSBUILD_LOG_VERSION: 2.0.94
+  MSBUILD_LOG_FILE: msbuild.binlog
+  NUGET_VERBOSITY: quiet
 dotnet_csproj:
   patch: true
   file: '**\*.csproj'
@@ -12,8 +16,15 @@ nuget:
   # This might be causing a hang.
   # account_feed: true
   project_feed: true
+before_build:
+- cmd: nuget restore -Verbosity %NUGET_VERBOSITY%
+- cmd: nuget install MSBuild.StructuredLogger -Version %MSBUILD_LOG_VERSION%  -SolutionDirectory . -Verbosity %NUGET_VERBOSITY%
 build:
   publish_nuget: true
   publish_nuget_symbols: true
   include_nuget_references: true
   parallel: true
+artifacts:
+  - path: $(MSBUILD_LOG_FILE)
+    name: MSBuild Binary Log
+    type: file
