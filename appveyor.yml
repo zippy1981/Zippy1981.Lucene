@@ -1,7 +1,7 @@
 version: 0.1.{build}
 image: Visual Studio 2017
 environment:
-  MSBUILD_LOG_VERSION: 2.0.94
+  DOCFX_FOLDER: _site
   MSBUILD_LOG_FILE: msbuild.binlog
   NUGET_VERBOSITY: quiet
 dotnet_csproj:
@@ -13,24 +13,28 @@ dotnet_csproj:
   file_version: '{version}'
   informational_version: '{version}'
 nuget:
-  # This might be causing a hang.
-  # account_feed: true
   project_feed: true
 before_build:
 - cmd: nuget restore -Verbosity %NUGET_VERBOSITY%
 - cmd: choco install codecov
+- cmd: choco install docfx
 build:
   publish_nuget: true
   publish_nuget_symbols: true
   include_nuget_references: true
   parallel: true
+after_build:
+- cmd: docfx
 test_script:
-  - cmd: dotnet test --no-build --logger trx
+  - cmd: dotnet test --no-build --logger trx #override default test command to one that respects msbuild.rsp
 after_test:
 - cmd: codecov -f "coverage.opencover.xml"
 - ps: .\scripts\appveyor\Publish-TestResults.ps1
     
 artifacts:
+  - path: $(DOCFX_FOLDER)
+    name: Documentation
+    type: Zip
   - path: $(MSBUILD_LOG_FILE)
     name: MSBuild Binary Log
     type: File
@@ -47,6 +51,4 @@ deploy:
     skip_symbols: false
     artifact: /.*\.nupkg/
     on:
-      branch: [
-        master
-      ]
+      branch: [ master ]
