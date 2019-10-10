@@ -14,6 +14,10 @@ using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Zippy1981.Lucene.Context
 {
+    /// <summary>
+    /// Provides a context that encapsulates all the Lucene.NET objects needed to read and write 
+    /// <see cref="Document"/>s to the <see cref="Directory"/>.
+    /// </summary>
     public class LuceneContext : ILuceneContext
     {
         private readonly ILogger _logger;
@@ -89,6 +93,19 @@ namespace Zippy1981.Lucene.Context
 
         private QueryParser GetMultiFieldQueryParser(IEnumerable<string> fields) 
             => new MultiFieldQueryParser(_version, fields.ToArray(), _analyzer);
+
+
+
+        /// <summary>
+        /// Insert or update a document based on a field having a unique value.
+        /// </summary>
+        /// <param name="name">Name of the field.</param>
+        /// <param name="document">The new document contents.</param>
+        public void UpsertDocument(string name, Document document)
+        {
+            var value = document.GetField(name);
+            _writer.UpdateDocument(new Term(name, value.GetStringValue()), document);
+        }
 
         /// <summary>
         /// Insert or update a document based on a field having a unique value.
