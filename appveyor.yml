@@ -35,7 +35,6 @@ after_test:
       Write-Host "Uploading $($_.Fullname) to $($TestUploadUrl) . . ."
       $wc.UploadFile($TestUploadUrl, $_.FullName)
     }
-    
 artifacts:
   - path: $(MSBUILD_LOG_FILE)
     name: MSBuild Binary Log
