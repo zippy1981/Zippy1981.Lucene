@@ -28,7 +28,7 @@ test_script:
   - cmd: dotnet test --no-build --logger trx
 after_test:
 - cmd: codecov -f "coverage.opencover.xml"
-- ps: .\scripts\appveyor\Upload-TestResults.ps1
+- ps: .\scripts\appveyor\Publish-TestResults.ps1
     
 artifacts:
   - path: $(MSBUILD_LOG_FILE)
