@@ -30,11 +30,12 @@ after_test:
 - cmd: codecov -f "coverage.opencover.xml"
 - ps: >-
     $wc = New-Object 'System.Net.WebClient'
-    $TestUploadUrl = "https://ci.appveyor.com/api/testresults/mstest/$($env:APPVEYOR_JOB_ID" 
+    $TestUploadUrl = "https://ci.appveyor.com/api/testresults/mstest/$($env:APPVEYOR_JOB_ID)" 
     Get-ChildItem -Recurse *.trx | %{
       Write-Host "Uploading $($_.Fullname) to $($TestUploadUrl) . . ."
       $wc.UploadFile($TestUploadUrl, $_.FullName)
     }
+    
 artifacts:
   - path: $(MSBUILD_LOG_FILE)
     name: MSBuild Binary Log
