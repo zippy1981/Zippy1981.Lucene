@@ -37,7 +37,7 @@ artifacts:
   - path: coverage.opencover.xml
     name: CodeCov.IO Report
     type: File
-  - path: **\*.trx
+  - path: '**/*.trx'
     name: Test Results
     type: Zip
 deploy:
