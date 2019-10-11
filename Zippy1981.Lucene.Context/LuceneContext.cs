@@ -40,6 +40,9 @@ namespace Zippy1981.Lucene.Context
         /// </summary>
         public int MaxResults { get; set; } = 50;
 
+        /// <param name="directory">The <see cref="Directory"/> for all operations in the <see cref="LuceneContext"/> to come from.</param>
+        /// <param name="analyzer">The <see cref="Analyzer"/> used for index reads and writes.</param>
+        /// <param name="logger">The Logger.</param>
         public LuceneContext(Directory directory, Analyzer analyzer, ILogger<LuceneContext> logger = null)
         {
             _version = LuceneVersion.LUCENE_48;
@@ -55,18 +58,23 @@ namespace Zippy1981.Lucene.Context
             _indexReader = DirectoryReader.Open(directory);
         }
 
+        /// <inheritdoc/>
         public void AddDocument(Document document)
         {
             _writer.AddDocument(document);
         }
 
+        /// <inheritdoc/>
         public void CommitWriter() => _writer.Commit();
 
+        /// <inheritdoc/>
         public async Task<Document> GetDocumentByIdAsync(int id) => (await GetReaderAsync()).Document(id);
 
+        /// <inheritdoc/>
         public Query GetQuery(IEnumerable<string> fields, string queryText)
             => GetMultiFieldQueryParser(fields).Parse(queryText);
 
+        /// <inheritdoc/>
         public async Task<TopDocs> ExecQueryAsync(Query query) => (await GetIndexSearcherAsync()).Search(query, MaxResults);
 
         private async Task<IndexSearcher> GetIndexSearcherAsync() => new IndexSearcher(await GetReaderAsync());
