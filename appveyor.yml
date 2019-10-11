@@ -28,13 +28,8 @@ test_script:
   - cmd: dotnet test --no-build --logger trx
 after_test:
 - cmd: codecov -f "coverage.opencover.xml"
-- ps: >-
-    $wc = New-Object 'System.Net.WebClient'
-    $TestUploadUrl = "https://ci.appveyor.com/api/testresults/mstest/$($env:APPVEYOR_JOB_ID)"
-    Get-ChildItem -Recurse *.trx | %{
-      Write-Host "Uploading $($_.Fullname) to $($TestUploadUrl) . . ."
-      $wc.UploadFile($TestUploadUrl, $_.FullName)
-    }
+- ps: .\scripts\appveyor\Upload-TestResults.ps1
+    
 artifacts:
   - path: $(MSBUILD_LOG_FILE)
     name: MSBuild Binary Log
