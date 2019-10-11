@@ -33,7 +33,13 @@ after_test:
 artifacts:
   - path: $(MSBUILD_LOG_FILE)
     name: MSBuild Binary Log
-    type: file
+    type: File
+  - path: coverage.opencover.xml
+    name: CodeCov.IO Report
+    type: File
+  - path: **\*.trx
+    name: Test Results
+    type: Zip
 deploy:
   - provider: NuGet
     api_key:
