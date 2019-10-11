@@ -39,7 +39,7 @@ artifacts:
     type: File
   - path: '**/*.trx'
     name: Test Results
-    type: Zip
+    type: File
 deploy:
   - provider: NuGet
     api_key:
